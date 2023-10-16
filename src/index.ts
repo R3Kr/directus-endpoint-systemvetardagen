@@ -18,11 +18,15 @@ if (!process.env.ACCOUNT_API_KEY) {
   throw Error("ACCOUNT_API_KEY env not configured");
 }
 
+if (!process.env.COMPANY_ROLE) {
+  throw Error("COMPANY_ROLE env not configured");
+}
+
 export default defineEndpoint({
   id: "systemvetardagen",
   handler: (router) => {
     router.get("/", async (req, res) => {
-      const headers = await fetch("http://localhost:8055/auth/login", {
+      const headers = await fetch(`${process.env.PUBLIC_URL}auth/login`, {
         headers: {
           accept: "application/json, text/plain, */*",
           "accept-language": "en-GB,en-US;q=0.9,en;q=0.8",
@@ -52,7 +56,7 @@ export default defineEndpoint({
       const headers = new Headers();
       headers.append("Authorization", `Bearer ${process.env.ACCOUNT_API_KEY}`);
 
-      const resp = await fetch("http://0.0.0.0:8055/users", {
+      const resp = await fetch(`${process.env.PUBLIC_URL}users`, {
         headers: headers,
       }).then((r) => r.json());
       const companies = userSchema
@@ -90,11 +94,11 @@ export default defineEndpoint({
         first_name: name,
         email: `${name}@example.com`,
         password: process.env.COMPANY_PASSWORD,
-        role: "4e61f8f9-16aa-48ab-a746-11ebd314a3f2",
+        role: process.env.COMPANY_ROLE,
         tags: ["company"],
       };
 
-      const resp = await fetch("http://0.0.0.0:8055/users", {
+      const resp = await fetch(`${process.env.PUBLIC_URL}users`, {
         method: "POST",
         headers: headers,
         body: JSON.stringify(body),
