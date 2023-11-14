@@ -11,7 +11,7 @@
   "type": "module",
   "directus:extension": {
     "type": "endpoint",
-    "path": "dist/index.js",
+    "path": "index.js",
     "source": "src/index.ts",
     "host": "^10.1.11"
   },
